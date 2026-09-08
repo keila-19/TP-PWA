@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP 01</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <h2>Perfil del Usuario</h2>
+        <p>Nombre: {{ nombre }}</p>
+        <p>Edad: {{ edad }}</p>
+        <p>Ciudad: {{ ciudad }}</p>
+        <hr>
+        <p>Hola, mi nombre es {{ nombre }}, tengo {{ edad }} años y vivo en {{ ciudad }}.</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                nombre: 'Ana García',
+                edad: 30,
+                ciudad: 'Tupungato'
+            }
+        });
+    </script>
+
+</body>
+</html>
