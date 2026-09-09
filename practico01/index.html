@@ -10,11 +10,18 @@
     
     <div id="app">
         <h2>Perfil del Usuario</h2>
-        <p>Nombre: {{ nombre }}</p>
-        <p>Edad: {{ edad }}</p>
-        <p>Ciudad: {{ ciudad }}</p>
-        <hr>
+        <p><strong>Nombre:</strong> {{ nombre }}</p>
+        <p><strong>Edad:</strong> {{ edad }}</p>
+        <p><strong>Ciudad:</strong> {{ ciudad }}</p>
         <p>Hola, mi nombre es {{ nombre }}, tengo {{ edad }} años y vivo en {{ ciudad }}.</p>
+        <hr>
+
+        <!-- Paso 3: Contador Interactivo -->
+        <h2>Contador Interactivo</h2>
+        <P><strong>Contador:</strong> {{ contador }}</P>
+        <button @click="incrementarContador">Incrementar</button>
+        <button @click="decrementarContador">Decrementar</button>
+        <hr>
     </div>
 
     <script>
@@ -23,7 +30,16 @@
             data: {
                 nombre: 'Ana García',
                 edad: 30,
-                ciudad: 'Tupungato'
+                ciudad: 'Tupungato',
+                contador: 0
+            },
+            methods:{
+                incrementarContador() {
+                    this.contador++;
+                },
+                decrementarContador() {
+                    this.contador--;
+                }
             }
         });
     </script>
