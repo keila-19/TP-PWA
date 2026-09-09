@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP 01</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     
@@ -47,10 +48,14 @@
                 <strong>{{ evento.nombre }}</strong> - Timestamp {{ evento.timestamp }} ms
             </li>
          </ul>
+         <hr>
+
+         <h2>Consumo de API con axios</h2>
+         <p>Las funciones obtenerPost(postId) y obtenerComments(postId) estan definidas en la instancia Vue</p>
     </div>
 
     <script>
-        new Vue({
+        const app = new Vue({
             el: '#app',
             data: {
                 nombre: 'Ana García',
@@ -89,6 +94,26 @@
                         nombre: nombreEvento,
                         timestamp: new Date().getTime()
                     });
+                },
+                obtenerPost(postId) {
+                    return axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+                        .then(response => {
+                            console.log('Post obtenido:', response.data);
+                            return response.data;
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener el post:', error);
+                        });
+                },
+                obtenerComments(postId) {
+                    return axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
+                        .then(response => {
+                            console.log('Comentarios obtenidos:', response.data);
+                            return response.data;
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener los comentarios:', error);
+                        });
                 }
             },
             computed: {
