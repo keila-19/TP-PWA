@@ -22,6 +22,24 @@
         <button @click="incrementarContador">Incrementar</button>
         <button @click="decrementarContador">Decrementar</button>
         <hr>
+
+        <!-- Paso 4: lista de tareas con conteo y estado (estoy al horno) -->
+         <h2>Lista de Tareas</h2>
+         <div>
+            <input type="text" v-model="nuevaTarea" placeholder="escribe una tarea">
+            <button @click="agregarTarea">Agregar Tarea</button>
+         </div>
+
+         <p><strong>Total de Tareas:</strong> {{ totalTareas }}</p>
+         <p><strong>Tareas Pendientes:</strong> {{ tareasPendientes }}</p>
+
+         <ul>
+            <li v-for="tarea in tareas" :key="tarea.id">
+                <input type="checkbox" v-model="tarea.completada">
+                <span>{{ tarea.texto }}</span>
+                <button @click="eliminarTarea(tarea)">Eliminar</button>
+            </li>
+         </ul>
     </div>
 
     <script>
@@ -31,7 +49,11 @@
                 nombre: 'Ana García',
                 edad: 30,
                 ciudad: 'Tupungato',
-                contador: 0
+                contador: 0,
+                nuevaTarea: '',
+                tareas: [
+                    { id: 1, texto: 'Aprender Vue', completada: false },
+                ]
             },
             methods:{
                 incrementarContador() {
@@ -39,6 +61,27 @@
                 },
                 decrementarContador() {
                     this.contador--;
+                },
+                agregarTarea() {
+                    if (this.nuevaTarea.trim() !== '') {
+                        this.tareas.push({
+                            id: Date.now(),
+                            texto: this.nuevaTarea,
+                            completada: false
+                        });
+                        this.nuevaTarea = '';
+                    }
+                },
+                eliminarTarea(tarea) {
+                    this.tareas = this.tareas.filter(t => t.id !== tarea.id);
+                }
+            },
+            computed: {
+                totalTareas() {
+                    return this.tareas.length;
+                },
+                tareasPendientes() {
+                    return this.tareas.filter(tarea => !tarea.completada).length;
                 }
             }
         });
