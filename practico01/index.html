@@ -40,6 +40,13 @@
                 <button @click="eliminarTarea(tarea)">Eliminar</button>
             </li>
          </ul>
+         <hr>
+         <h2>Lista de evento (ciclo de vida)</h2>
+         <ul>
+            <li v-for="evento in listaeventos" :key="evento.id">
+                <strong>{{ evento.nombre }}</strong> - Timestamp {{ evento.timestamp }} ms
+            </li>
+         </ul>
     </div>
 
     <script>
@@ -53,7 +60,8 @@
                 nuevaTarea: '',
                 tareas: [
                     { id: 1, texto: 'Aprender Vue', completada: false },
-                ]
+                ],
+                listaeventos: [] 
             },
             methods:{
                 incrementarContador() {
@@ -74,6 +82,13 @@
                 },
                 eliminarTarea(tarea) {
                     this.tareas = this.tareas.filter(t => t.id !== tarea.id);
+                },
+                registrarEvento(nombreEvento) {
+                    this.listaeventos.push({
+                        id: Date.now() + Math.random(),
+                        nombre: nombreEvento,
+                        timestamp: new Date().getTime()
+                    });
                 }
             },
             computed: {
@@ -83,6 +98,30 @@
                 tareasPendientes() {
                     return this.tareas.filter(tarea => !tarea.completada).length;
                 }
+            },
+            beforeCreate() {
+                console.log('beforeCreate');
+            },
+            created() {
+                this.registrarEvento('created');
+            },
+            beforeMount() {
+                this.registrarEvento('beforeMount');
+            },
+            mounted() {
+                this.registrarEvento('mounted');
+            },
+            beforeUpdate() {
+                console.log('beforeUpdate ejecutado');
+            },
+            updated() {
+                console.log('updated ejecutado');
+            },
+            beforeDestroy() {
+                this.registrarEvento('beforeDestroy');
+            },
+            destroyed() {
+                this.registrarEvento('destroyed');
             }
         });
     </script>
