@@ -6,6 +6,25 @@
     <title>TP 01</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .contenedor-posts {
+            display: flex;
+            gap: 20px;
+        }
+        .columna-posts, .columna-comentarios {
+            flex: 1;
+        }
+        .post-item {
+            cursor: pointer;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .post-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
     
@@ -42,6 +61,7 @@
             </li>
          </ul>
          <hr>
+         <!--paso 5: Lista de eventos (ciclo de vida) -->
          <h2>Lista de evento (ciclo de vida)</h2>
          <ul>
             <li v-for="evento in listaeventos" :key="evento.id">
@@ -49,10 +69,36 @@
             </li>
          </ul>
          <hr>
+        <!-- Paso 6 y 7: Consumo de API y Listado de posts -->
+<h2>Consumo de API con axios</h2>
+<p>Las funciones obtenerPost(postId) y obtenerComments(postId) estan definidas en la instancia Vue</p>
 
-         <h2>Consumo de API con axios</h2>
-         <p>Las funciones obtenerPost(postId) y obtenerComments(postId) estan definidas en la instancia Vue</p>
+<div class="contenedor-posts">
+    <!-- Columna de Posts -->
+    <div class="columna-posts">
+        <h3>Lista de Posts (1 al 10)</h3>
+        <ol>
+            <li v-for="post in posts" :key="post.id" class="post-item" @click="cargarComentarios(post)">
+                <strong>{{ post.title }}</strong>
+                <p>{{ post.body }}</p>
+            </li>
+        </ol>
     </div>
+
+    <!-- Columna de Comentarios -->
+    <div class="columna-comentarios">
+        <h3>Comentarios {{ postSeleccionado ? 'del Post #' + postSeleccionado : '' }}</h3>
+        <p v-if="comentarios.length === 0">Haz clic en un post para ver sus comentarios.</p>
+        <ul v-else>
+            <li v-for="comentario in comentarios" :key="comentario.id">
+                <p><strong>{{ comentario.name }}</strong> ({{ comentario.email }})</p>
+                <p>{{ comentario.body }}</p>
+                <hr>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
 
     <script>
         const app = new Vue({
@@ -66,7 +112,10 @@
                 tareas: [
                     { id: 1, texto: 'Aprender Vue', completada: false },
                 ],
-                listaeventos: [] 
+                listaeventos: [],
+                posts: [],
+                comentarios: [],
+                postSeleccionado: null
             },
             methods:{
                 incrementarContador() {
@@ -114,6 +163,14 @@
                         .catch(error => {
                             console.error('Error al obtener los comentarios:', error);
                         });
+                },
+                cargarComentarios(post) {
+                    this.postSeleccionado = post.id;
+                    this.obtenerComments(post.id).then(comentarios => {
+                        if (comentarios) {
+                            this.comentarios = comentarios;
+                        }
+                    });
                 }
             },
             computed: {
@@ -135,6 +192,15 @@
             },
             mounted() {
                 this.registrarEvento('mounted');
+                
+                // Paso 7: Bucle for ejecutado 10 veces para obtener los primeros 10 posts
+                for (let i = 1; i <= 10; i++) {
+                    this.obtenerPost(i).then(post => {
+                        if (post) {
+                            this.posts.push(post);
+                        }
+                    });
+                }
             },
             beforeUpdate() {
                 console.log('beforeUpdate ejecutado');
