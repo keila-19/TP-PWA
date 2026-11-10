@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:16
+    container_name: tp2_postgres
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./backend/postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
