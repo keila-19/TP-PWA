@@ -20,3 +20,15 @@ class Aula(models.Model):
     cant_proyector = models.IntegerField(default=0)
     aforo = models.IntegerField(default=0)
     es_climatizada = models.BooleanField(default=False)
+
+class ReservaAula(models.Model):
+    aula = models.ForeignKey(Aula, on_delete=models.CASCADE, db_column='id_aula')
+    fh_desde = models.DateTimeField()
+    fh_hasta = models.DateTimeField()
+    observacion = models.CharField(max_length=256)
+
+class HorarioMateria(models.Model):
+    materia = models.ForeignKey(Materia, on_delete=models.CASCADE, db_column='id_materia')
+    reserva = models.ForeignKey(ReservaAula, on_delete=models.CASCADE, db_column='id_reserva')
+    fh_desde = models.DateTimeField()
+    fh_hasta = models.DateTimeField()
