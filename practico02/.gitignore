@@ -1,2 +1,3 @@
 backend/postgres_data/
 .env
+backend/django/db.sqlite3

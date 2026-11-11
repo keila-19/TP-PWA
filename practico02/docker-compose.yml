@@ -9,3 +9,18 @@ services:
       - ./backend/postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  django:
+    image: pwa2026tp2:preliminar
+    build:
+      context: ./config/django-image
+    container_name: tp2_django
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./backend/django:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
